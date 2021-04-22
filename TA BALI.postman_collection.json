@@ -1,0 +1,547 @@
+{
+	"info": {
+		"_postman_id": "682eda26-2975-4ef9-a36a-aef51588380c",
+		"name": "TA BALI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dokter",
+			"item": [
+				{
+					"name": "insertDokter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "foto",
+									"type": "file",
+									"src": "/C:/Users/Dell/Pictures/Wallpaper/abstract_rain-1920x1080.jpg"
+								},
+								{
+									"key": "nama",
+									"value": "Dokter with img",
+									"type": "text"
+								},
+								{
+									"key": "jabatan",
+									"value": "jabatan",
+									"type": "text"
+								},
+								{
+									"key": "nidn",
+									"value": "nidn",
+									"type": "text"
+								},
+								{
+									"key": "no_hp",
+									"value": "nohp",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "email",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/dokter/tambahDokter",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"dokter",
+								"tambahDokter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/dokter",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"dokter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testing1@gmail.com\",\n    \"password\": \"dokter1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/dokter/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"dokter",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jadwal",
+			"item": [
+				{
+					"name": "geAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/jadwal/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getJadwalByTanggal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/jadwal/getByTanggal?idMhs=1&idBlok=1&tanggal=testting tanggal 2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								"getByTanggal"
+							],
+							"query": [
+								{
+									"key": "idMhs",
+									"value": "1"
+								},
+								{
+									"key": "idBlok",
+									"value": "1"
+								},
+								{
+									"key": "tanggal",
+									"value": "testting tanggal 2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByMhsId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/jadwal/getByMhsId?idMhs=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								"getByMhsId"
+							],
+							"query": [
+								{
+									"key": "idMhs",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByPengajarId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/jadwal/getByPengajarId?idPengajar=2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								"getByPengajarId"
+							],
+							"query": [
+								{
+									"key": "idPengajar",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByDokterId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/jadwal/getByDokterId?idDokter=2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								"getByDokterId"
+							],
+							"query": [
+								{
+									"key": "idDokter",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStatusJadwal",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idJadwal\": 4,\r\n    \"status\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/jadwal/updateStatus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								"updateStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByDokterAndTanggal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/jadwal/dokter/getByTanggal?idDokter=1&idBlok=1&tanggal=testting tanggal 2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								"dokter",
+								"getByTanggal"
+							],
+							"query": [
+								{
+									"key": "idDokter",
+									"value": "1"
+								},
+								{
+									"key": "idBlok",
+									"value": "1"
+								},
+								{
+									"key": "tanggal",
+									"value": "testting tanggal 2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByKelompok",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/jadwal/getByKelompok?idKelompok=1&idBlok=1&tanggal=testting tanggal 2&angkatan=17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jadwal",
+								"getByKelompok"
+							],
+							"query": [
+								{
+									"key": "idKelompok",
+									"value": "1"
+								},
+								{
+									"key": "idBlok",
+									"value": "1"
+								},
+								{
+									"key": "tanggal",
+									"value": "testting tanggal 2"
+								},
+								{
+									"key": "angkatan",
+									"value": "17"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blok",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/blok",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blok"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByMhsId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/blok/getByMhsId?idMhs=1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blok",
+								"getByMhsId"
+							],
+							"query": [
+								{
+									"key": "idMhs",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByPengajarId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/blok/getByPengajarId?idPengajar=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blok",
+								"getByPengajarId"
+							],
+							"query": [
+								{
+									"key": "idPengajar",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mahasiswa",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "getById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/mahasiswa/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"mahasiswa",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"namaLengkap\": \"Rizaldi Bali\",\n    \"email\": \"rizaldiBali@gmail.com\",\n    \"password\": \"bali123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/mahasiswa/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"mahasiswa",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Kelompok",
+			"item": [
+				{
+					"name": "insertKelompok",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"namaKelompok\": \"Kelompok 3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/kelompok/insert",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"kelompok",
+								"insert"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
