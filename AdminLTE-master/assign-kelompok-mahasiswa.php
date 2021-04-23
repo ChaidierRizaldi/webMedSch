@@ -190,95 +190,73 @@ include('header.php')
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td width="50px">1</td>
-                        <td>Silvi Rahmawati</td>
-                        <td width="200px">17711162</td>
-                        <td width="150px">
-                          <!-- select -->
-                          <?php
-                          $query = mysqli_query($koneksi, "SELECT * FROM kelompok");
-                          ?>
-                          <div class="form-group">
-
-                            <select class="form-control">
-                              <?php
-                              while ($result = mysqli_fetch_assoc($query)) {
-                              ?>
-                                <option value="<?= $result['id_kelompok'] ?>"><?= $result['nama_kelompok'] ?></option>
-                              <?php } ?>
-                            </select>
-                          </div>
-                </div>
-                </td>
-              </div>
-              </tr>
-
-              <tr>
-                <td width="50px">2</td>
-                <td>Silvi Rahmawati</td>
-                <td width="200px">17711162</td>
-                <td width="150px">
-                  <!-- select -->
-                  <?php
-                  $query = mysqli_query($koneksi, "SELECT * FROM kelompok");
-                  ?>
-                  <div class="form-group">
-
-                    <select class="form-control">
                       <?php
-                      while ($result = mysqli_fetch_assoc($query)) {
+                      $no = 1;
+                      $queryMhs = mysqli_query($koneksi, "SELECT * FROM mahasiswa");
+                      while ($mahasiswa = mysqli_fetch_assoc($queryMhs)) {
                       ?>
-                        <option value="<?= $result['id_kelompok'] ?>"><?= $result['nama_kelompok'] ?></option>
+                        <tr>
+                          <td width="50px"><?= $no++ ?></td>
+                          <td><?= $mahasiswa['nama_lengkap'] ?></td>
+                          <td width="200px"><?= $mahasiswa['nim'] ?></td>
+                          <td width="150px">
+                            <!-- select -->
+                            <?php
+                            $query = mysqli_query($koneksi, "SELECT * FROM kelompok");
+                            ?>
+                            <div class="form-group">
+
+                              <select name="idKelompok[]" class="form-control">
+                                <?php
+                                while ($result = mysqli_fetch_assoc($query)) {
+                                ?>
+                                  <option <?= $mahasiswa['id_kelompok'] == $result['id_kelompok'] ? 'selected' : '' ?> value="<?= $result['id_kelompok'] ?>"><?= $result['nama_kelompok'] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </td>
+                        </tr>
                       <?php } ?>
-                    </select>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>NIM</th>
+                        <th>Kelompok</th>
+                      </tr>
+                    </tfoot>
+
+                  </table>
+                  <div class="btn-group-toggle" style="width: 100px; float: right; margin-top: 30px;">
+                    <button type="button" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default" data-dismiss="modal">Submit</button>
                   </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
             </div>
-            </td>
+            <!-- /.col -->
           </div>
-          </tr>
-
-
-
-          <tfoot>
-            <tr>
-              <th>No</th>
-              <th>Nama Mahasiswa</th>
-              <th>NIM</th>
-              <th>Kelompok</th>
-            </tr>
-          </tfoot>
-
-          </table>
-          <div class="btn-group-toggle" style="width: 100px; float: right; margin-top: 30px;">
-            <button type="button" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default" data-dismiss="modal">Submit</button>
-          </div>
+          <!-- /.row -->
         </div>
-        <!-- /.card-body -->
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
     </div>
-    <!-- /.card -->
-  </div>
-  <!-- /.col -->
-  </div>
-  <!-- /.row -->
-  </div>
-  <!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer" style="background-color: #EBF6FF;">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 1.0.0
-    </div>
-    <strong>MedSch Web Admin</strong>
-  </footer>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" style="background-color: #EBF6FF;">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 1.0.0
+      </div>
+      <strong>MedSch Web Admin</strong>
+    </footer>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
 

@@ -1,22 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MedSch | Lihat Jadwal</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-</head>
+<?php
+include('header.php')
+?>
 
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -225,14 +212,12 @@
                                   <label>Blok</label>
                                 </div>
                                 <select class="form-control select2bs4" style="width: 70%;">
-                                  <option selected="selected">Blok 3.3 Masalah Pada Remaja</option>
-                                  <option>Blok 3.3 Masalah Pada Remaja</option>
-                                  <option>Blok 3.4 Masalah Pada Dewasa I</option>
-                                  <option>Blok 3.5 Masalah pada Dewasa II</option>
-                                  <option>Blok 4.1 Seribu Hari Pertama Kehidupan </option>
-                                  <option>Blok 4.2 Kegawatdaruratn</option>
-                                  <option>Blok 4.3 Komprehensif Klinik</option>
-                                  <option>Blok 4.4 Kesehatan Masyarakat</option>
+                                  <?php
+                                  $queryBlok = mysqli_query($koneksi, "SELECT * FROM blok");
+                                  while ($blok = mysqli_fetch_assoc($queryBlok)) {
+                                  ?>
+                                    <option value="<?= $blok['id_blok'] ?>"><?= $blok['nama_blok'] ?></option>
+                                  <?php } ?>
                                 </select>
                               </div>
                             </div>
