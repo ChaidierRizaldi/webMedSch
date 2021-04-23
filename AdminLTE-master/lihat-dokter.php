@@ -1,22 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MedSch | Lihat Dokter</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-</head>
+<?php
+include('header.php')
+?>
 
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -205,43 +192,49 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>dr. Linda Rosita, M.Kes., Sp.PK.</td>
-                        <td>Dekan</td>
-                        <td>4009097001</td>
-                        <td>081234675908</td>
-                        <td>linda.rosita@uii.ac.id</td>
-                        <td>
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-edit">Edit</button>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-hapus">Hapus</button>
-                          </div>
+                      <?php
+                      $no = 1;
+                      $query = mysqli_query($koneksi, "SELECT * FROM pengajar");
+                      while ($result = mysqli_fetch_assoc($query)) {
+                      ?>
+                        <tr>
+                          <td><?= $no++ ?></td>
+                          <td><?= $result['nama'] ?></td>
+                          <td><?= $result['jabatan'] ?> </td>
+                          <td><?= $result['nidn'] ?></td>
+                          <td><?= $result['no_telp'] ?></td>
+                          <td><?= $result['email'] ?></td>
+                          <td>
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-edit<?= $result['id_pengajar'] ?>">Edit</button>
+                              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-hapus">Hapus</button>
+                            </div>
 
-                          <!-- Modal Hapus -->
-                          <div class="modal fade" id="modal-hapus">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header" style="text-align: center">
-                                  <h4 class="modal-title">Apakah Anda Yakin Untuk Menghapus Data Tersebut ?</h4>
-                                </div>
-                                <div class="modal-footer justify-content-between">
-                                  <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-                                  <a href="lihat-dokter.php">
-                                    <button type="button" class="btn btn-primary">Ya</button>
-                                  </a>
+
+                            <!-- Modal Hapus -->
+                            <div class="modal fade" id="modal-hapus">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header" style="text-align: center">
+                                    <h4 class="modal-title">Apakah Anda Yakin Untuk Menghapus Data Tersebut ?</h4>
+                                  </div>
+                                  <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                    <a href="lihat-dokter.php">
+                                      <button type="button" class="btn btn-primary">Ya</button>
+                                    </a>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
-                          <!-- Modal Edit -->
-                          <div class="modal fade" id="modal-edit">
-                            <div class="modal-dialog modal-xl">
-                              <div class="modal-content">
-                                <form action="#">
+
+                            <!-- Modal Edit -->
+                            <div class="modal fade" id="modal-edit<?= $result['id_pengajar'] ?>">
+                              <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
                                   <div class="modal-header">
-                                    <h4 class="modal-title">Edit Dokter</h4>
+                                    <h4 class="modal-title">Edit Dokter <?= $result['nama'] ?></h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                       <span aria-hidden="true">&times;</span>
                                     </button>
@@ -311,211 +304,64 @@
                                               </div>
                                               <!-- /.col -->
                                               <!-- /.col -->
+                                            </form>
                                           </div>
-                                </form>
-                                <!-- /.row -->
+                                          <!-- /.row -->
+                                        </div>
+
+
+                                        <!-- /.card -->
+                                      </div>
+                                    </section>
+                                  </div>
+                                </div>
+
+                                <!-- /.modal-content -->
                               </div>
-
-
-                              <!-- /.card -->
+                              <!-- /.modal-dialog -->
                             </div>
-      </section>
-    </div>
-
-    </form>
-  </div>
-
-  <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-  </td>
-  </div>
-  </tr>
-
-  <tr>
-    <td>2</td>
-    <td>dr. Erlina Marfianti, M.Sc., Sp.PD.</td>
-    <td>Wakil Dekan Bidang </td>
-    <td>4009097002</td>
-    <td>087542765098</td>
-    <td>erlina.marfianti@uii.ac.id</td>
-    <td>
-      <div class="btn-group">
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-edit">Edit</button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-hapus">Hapus</button>
-      </div>
-
-
-      <!-- Modal Hapus -->
-      <div class="modal fade" id="modal-hapus">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header" style="text-align: center">
-              <h4 class="modal-title">Apakah Anda Yakin Untuk Menghapus Data Tersebut ?</h4>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-              <a href="lihat-dokter.php">
-                <button type="button" class="btn btn-primary">Ya</button>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- Modal Edit -->
-      <div class="modal fade" id="modal-edit">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <form action="#">
-              <div class="modal-header">
-                <h4 class="modal-title">Edit Dokter</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                            <!-- /.modal -->
+                          </td>
+                        </tr>
+                      <?php } ?>
+                    <tfoot>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Dokter</th>
+                        <th>Jabatan</th>
+                        <th>NIDN</th>
+                        <th>No. HP</th>
+                        <th>Email</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.card-body -->
               </div>
-              <div class="modal-body">
-                <section class="content">
-                  <div class="container-fluid">
-                    <div class="card card-default">
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <form action="">
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                <label for="exampleInputFile">Foto</label>
-                                <div class="input-group">
-                                  <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="exampleInputFile">
-                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                  </div>
-                                  <div class="input-group-append">
-                                    <span class="input-group-text">Upload</span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <!-- Nama Dokter -->
-                              <label>Nama Dokter</label>
-                              <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                </div>
-                                <input type="text" class="form-control" placeholder="Nama Dokter">
-                              </div>
-
-                              <!-- Jabatan -->
-                              <label>Jabatan</label>
-                              <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                </div>
-                                <input type="text" class="form-control" placeholder="Jabatan">
-                              </div>
-
-                              <!-- NIDN -->
-                              <label>NIDN</label>
-                              <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                </div>
-                                <input type="text" class="form-control" placeholder="NIDN">
-                              </div>
-                            </div>
-
-                            <div class="col-md-6">
-                              <!-- No. HP -->
-                              <label>No. HP</label>
-                              <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                </div>
-                                <input type="text" class="form-control" placeholder="No. HP">
-                              </div>
-
-                              <!-- Email -->
-                              <label>Email</label>
-                              <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                </div>
-                                <input type="email" class="form-control" placeholder="Email">
-                              </div>
-
-                              <!-- Button -->
-                              <div class="btn-group-toggle" style="width: 100px; float: right;">
-                                <button type="button" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default" data-dismiss="modal">Submit</button>
-                              </div>
-                              <!-- /.modal -->
-
-                              <!-- /.form-group -->
-                              <!-- /.form-group -->
-                            </div>
-                          </div>
-                          <!-- /.col -->
-                          <!-- /.col -->
-                      </div>
-            </form>
-            <!-- /.row -->
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
           </div>
-
-
-          <!-- /.card -->
+          <!-- /.row -->
         </div>
-        </section>
-      </div>
-
-      </form>
-      </div>
-
-      <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-    </td>
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
     </div>
-  </tr>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" style="background-color: #EBF6FF;">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 1.0.0
+      </div>
+      <strong>MedSch Web Admin</strong>
+    </footer>
 
-
-
-  <tfoot>
-    <tr>
-      <th>No</th>
-      <th>Nama Dokter</th>
-      <th>Jabatan</th>
-      <th>NIDN</th>
-      <th>No. HP</th>
-      <th>Email</th>
-      <th>Aksi</th>
-    </tr>
-  </tfoot>
-  </table>
-  </div>
-  <!-- /.card-body -->
-  </div>
-  <!-- /.card -->
-  </div>
-  <!-- /.col -->
-  </div>
-  <!-- /.row -->
-  </div>
-  <!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer" style="background-color: #EBF6FF;">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 1.0.0
-    </div>
-    <strong>MedSch Web Admin</strong>
-  </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
 
