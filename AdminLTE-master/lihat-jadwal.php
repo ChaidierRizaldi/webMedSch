@@ -2,150 +2,86 @@
 <html lang="en">
 
 <?php
-include('header.php')
+include('header.php');
+
+$periodeArr = [
+  '2020/2021 - Genap',
+  '2020/2021 - Ganjil',
+  '2019/2020 - Genap',
+  '2019/2020 - Ganjil',
+  '2018/2019 - Genap',
+  '2018/2019 - Ganjil',
+  '2017/2018 - Genap',
+  '2017/2018 - Ganjil'
+];
+
+// FILTER JADWAL
+$filterBlok = $_POST['id_blok'];
+$filterAngkatan = $_POST['filter_angkatan'];
+$filterPeriode = $_POST['filter_periode'];
+$id_jadwal = $_POST['idJadwal'];
+
+$query1 = "SELECT * FROM jadwal AS j
+          INNER JOIN pengajar AS p ON p.id_pengajar = j.id_pengajar 
+          INNER JOIN kelompok as kl ON kl.id_kelompok = j.id_kelompok";
+
+if (isset($_POST['tampilkanSemua'])) {
+  $filterBlok = null;
+  $filterAngkatan = null;
+  $filterPeriode = null;
+  $id_jadwal = null;
+}
+
+if (isset($_POST['jadwalDitolak'])) {
+  $filterBlok = null;
+  $filterAngkatan = null;
+  $filterPeriode = null;
+  $id_jadwal = null;
+
+  $query1 = "SELECT * FROM jadwal AS j
+  INNER JOIN pengajar AS p ON p.id_pengajar = j.id_pengajar 
+  INNER JOIN kelompok as kl ON kl.id_kelompok = j.id_kelompok WHERE status = 2";
+}
+
+// UPDATE JADWAL
+$idKelompok = $_POST['kelompok'];
+$periode = $_POST['periode'];
+$idBlok = $_POST['blok'];
+$angkatan = $_POST['angkatan'];
+$date = str_replace('/', '-', $_POST['tanggal']);
+$tanggal = date('Y/m/d');
+$jam = $_POST['jam'];
+$mataKuliah = $_POST['mata_kuliah'];
+$ruangKelas = $_POST['ruang_kelas'];
+$sesi = $_POST['sesi'];
+$idDokter = $_POST['pengajar'];
+$status = $_POST['status'];
+$idJadwal = $_POST['id_jadwal'];
+
+$updateJadwal = mysqli_query($koneksi, "UPDATE jadwal 
+                        SET id_kelompok = '$idKelompok', periode = '$periode', id_blok = '$idBlok',
+                        angkatan = '$angkatan', tanggal = '$tanggal', jam = '$jam', mata_kuliah = '$mataKuliah',
+                        ruang_kelas = '$ruangKelas', sesi = '$sesi', id_pengajar = '$idDokter', status = '$status'
+                        WHERE id_jadwal = '$idJadwal'");
+
+// var_dump($updateJadwal);
+
+// HAPUS JADWAL
+if (isset($id_jadwal)) {
+  mysqli_query($koneksi, "DELETE FROM jadwal WHERE id_jadwal = '$id_jadwal'");
+  $id_jadwal = '';
+}
+
 ?>
 
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #EBF6FF;">
-      <!-- Left navbar links -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-      </ul>
-
-      <!-- Right navbar links -->
-      <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="nav-icon fas fa-users-cog"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="profile.php" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/profile-setting.png" alt="User Avatar" class="img-size-50 mr-3">
-                <div class="media-body">
-                  <p class="text-sm">Profile</p>
-                  <p class="text-sm text-muted"></p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="login.php" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/logout.png" alt="User Avatar" class="img-size-50 mr-3">
-                <div class="media-body">
-                  <p class="text-sm">Logout</p>
-                  <p class="text-sm text-muted"></p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-
-          </div>
-        </li>
-        <!-- Notifications Dropdown Menu -->
-
-      </ul>
-    </nav>
+    <?php include('navbar.php') ?>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color: #84AECF;">
-      <!-- Brand Logo -->
-      <a href="dashboard.php" class="brand-link">
-        <img src="dist/img/logo-skripsi.png" alt="AdminLTE Logo" class="brand-image ">
-        <span class="brand-text font-weight-light">&nbsp; Web Version</span>
-      </a>
-
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-          <div class="image">
-            <img src="dist/img/profile-admin.png" class="img-circle elevation-2" alt="User Image">
-          </div>
-          <div class="info">
-            <a href="#" class="d-block">Admin</a>
-          </div>
-        </div>
-
-        <!-- SidebarSearch Form -->
-
-        <!-- Sidebar Menu -->
-        <nav class="mt-2">
-          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-calendar-week"></i>
-                <p>
-                  Jadwal Kuliah
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="lihat-jadwal.php" class="nav-link">
-                    <i class="nav-icon fas fa-calendar-alt"></i>
-                    <p>Lihat Jadwal</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="assign-kelompok-mahasiswa.php" class="nav-link">
-                    <i class="nav-icon fas fa-user-friends"></i>
-                    <p>Assign Kelompok</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="tambah-jadwal.php" class="nav-link">
-                    <i class="nav-icon fas fa-calendar-plus"></i>
-                    <p>Tambah Jadwal</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-address-book"></i>
-                <p>
-                  Daftar Dokter
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="lihat-dokter.php" class="nav-link">
-                    <i class="nav-icon fas fa-list-ul"></i></span>
-                    <p>Lihat Dokter</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="tambah-dokter.php" class="nav-link">
-                    <i class="nav-icon fas fa-edit"></i></span>
-                    <p>Tambah Dokter</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
-      </div>
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex"></div>
-      <!-- /.sidebar -->
-    </aside>
+    <?php include('sidebar.php') ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="background-color: #D9E1E8;">
@@ -179,62 +115,63 @@ include('header.php')
 
 
                   <div class="card-body">
-                    <form action="">
+                    <form action="lihat-jadwal.php" method="POST">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                           <div class="form-group">
                             <div class="row">
                               <div style="text-align: center; padding: 6px">
                                 <label>Periode</label>
                               </div>
-                              <select class="form-control select2bs4 input-group-sm" style="width: 40%;">
-                                <option selected="selected">2020/2021 - Genap</option>
-                                <option>2020/2021 - Genap</option>
-                                <option>2020/2021 - Ganjil</option>
-                                <option>2019/2020 - Genap</option>
-                                <option>2019/2020 - Ganjil</option>
-                                <option>2018/2019 - Genap</option>
-                                <option>2018/2019 - Ganjil</option>
-                                <option>2017/2018 - Genap</option>
-                                <option>2017/2018 - Ganjil</option>
+                              <select name="filter_periode" class="form-control select2bs4 input-group-sm" style="width: 40%;">
+                                <option>Pilih Periode</option>
+                                <?php
+                                foreach ($periodeArr as $value) {
+                                ?>
+                                  <option <?= $value == $filterPeriode ? 'selected' : '' ?> value="<?= $value ?>"><?= $value ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+
+                            <div class="row">
+                              <div style="padding: 6px; min-width: 66px">
+                                <label>Blok</label>
+                              </div>
+                              <select name="id_blok" class="form-control select2bs4" style="width: 40%;">
+                                <option value="">Pilih Blok</option>
+                                <?php
+                                $queryBlok = mysqli_query($koneksi, "SELECT * FROM blok");
+                                while ($blok = mysqli_fetch_assoc($queryBlok)) {
+                                ?>
+                                  <option <?= $filterBlok == $blok['id_blok'] ? 'selected' : '' ?> value="<?= $blok['id_blok'] ?>"><?= $blok['nama_blok'] ?></option>
+                                <?php } ?>
                               </select>
                             </div>
                           </div>
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                           <!-- /.form-group -->
-                          <div style="float: right;">
-                            <div class="form-group">
-                              <div class="row">
-                                <div style="padding: 6px; min-width: 80px">
-                                  <label>Blok</label>
-                                </div>
-                                <select class="form-control select2bs4" style="width: 70%;">
-                                  <?php
-                                  $queryBlok = mysqli_query($koneksi, "SELECT * FROM blok");
-                                  while ($blok = mysqli_fetch_assoc($queryBlok)) {
-                                  ?>
-                                    <option value="<?= $blok['id_blok'] ?>"><?= $blok['nama_blok'] ?></option>
-                                  <?php } ?>
-                                </select>
+                          <!-- <div style="float: right;"> -->
+                          <div class="form-group">
+                            <div class="row">
+                              <div style="padding: 6px; margin-right: 2px;">
+                                <label>Angkatan</label>
                               </div>
+                              <select name="filter_angkatan" class="form-control select2bs4" style="width: 75%;">
+                                <option value="">Pilih Angkatan</option>
+                                <option <?= $filterAngkatan == 17 ? 'selected' : '' ?> value="17">2017</option>
+                                <option <?= $filterAngkatan == 18 ? 'selected' : '' ?> value="18">2018</option>
+                              </select>
                             </div>
-                            <div class="form-group">
-                              <div class="row">
-                                <div style="padding: 6px; margin-right: 2px;">
-                                  <label>Angkatan</label>
-                                </div>
-                                <select class="form-control select2bs4" style="width: 70%;">
-                                  <option selected="selected">2017</option>
-                                  <option>2018</option>
-                                </select>
-                              </div>
+                            <div style="float: right;">
+                              <button name="tampilkanSemua" type="submit" class="btn btn-primary">Tampilkan Semua</button>
+                              <button name="tampilkanJadwal" type="submit" class="btn btn-primary">Tampilkan Filter</button>
+                              <button name="jadwalDitolak" type="submit" class="btn btn-danger">Jadwal Ditolak</button>
                             </div>
                           </div>
-
-
+                          <!-- </div> -->
                           <!-- /.modal -->
 
                           <!-- /.form-group -->
@@ -256,7 +193,7 @@ include('header.php')
 
                       <thead>
                         <tr>
-                          <th>Hari</th>
+                          <th>Tanggal</th>
                           <th>Waktu</th>
                           <th>Matakuliah</th>
                           <th>Ruang Kelas</th>
@@ -267,42 +204,57 @@ include('header.php')
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Senin</td>
-                          <td>08.00 - 08.00<br />
-                            09.00 - 09.50
-                          </td>
-                          <td>PA: Tumor pada, mata, hidung, dan kulit </td>
-                          <td>Fakultas Kedokteran UII</td>
-                          <td>1</td>
-                          <td>Dokter Default</td>
-                          <td>Siap belajar</td>
-                          <td>
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-edit">Edit</button>
-                              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-hapus">Hapus</button>
-                            </div>
+                        <?php
+                        if (isset($filterBlok) && isset($filterAngkatan) && isset($filterPeriode) && !isset($_GET['jadwalDitolak'])) {
+                          $query1 = "SELECT * FROM jadwal AS j
+                              INNER JOIN pengajar AS p ON p.id_pengajar = j.id_pengajar 
+                              INNER JOIN kelompok as kl ON kl.id_kelompok = j.id_kelompok 
+                              WHERE j.id_blok = $filterBlok AND j.angkatan = $filterAngkatan AND j.periode = '$filterPeriode'";
+                        }
+                        $queryJadwal = mysqli_query($koneksi, $query1);
+                        while ($jadwal = mysqli_fetch_assoc($queryJadwal)) {
+                        ?>
+                          <tr>
+                            <td><?= $jadwal['tanggal'] ?></td>
+                            <td><?= $jadwal['jam'] ?>
+                            </td>
+                            <td><?= $jadwal['mata_kuliah'] ?></td>
+                            <td><?= $jadwal['ruang_kelas'] ?></td>
+                            <td><?= $jadwal['sesi'] ?></td>
+                            <td><?= $jadwal['nama'] ?></td>
+                            <td><?php if ($jadwal['status'] == '0') {
+                                  echo 'Pending';
+                                } else if ($jadwal['status'] == '1') {
+                                  echo 'Siap Belajar';
+                                } else {
+                                  echo 'Ditolak';
+                                } ?></td>
+                            <td>
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-edit<?= $jadwal['id_jadwal'] ?>">Edit</button>
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-hapus<?= $jadwal['id_jadwal'] ?>">Hapus</button>
+                              </div>
 
-                            <div class="modal fade" id="modal-hapus">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h4 class="modal-title" style="margin: auto;">Apakah Anda Yakin Untuk Menghapus Data Tersebut ?</h4>
-                                  </div>
-                                  <div class="modal-footer justify-content-between">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-                                    <a href="lihat-jadwal.php">
-                                      <button type="button" class="btn btn-primary">Ya</button>
-                                    </a>
+                              <div class="modal fade" id="modal-hapus<?= $jadwal['id_jadwal'] ?>">
+                                <input type="hidden" name="id_jadwal" value="<?= $jadwal['id_jadwal'] ?>">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title" style="margin: auto;">Apakah Anda Yakin Untuk Menghapus Data Tersebut ?</h4>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                      <a href="lihat-jadwal.php?idJadwal=<?= $jadwal['id_jadwal'] ?>">
+                                        <button type="button" class="btn btn-primary">Ya</button>
+                                      </a>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
 
-                            <div class="modal fade" id="modal-edit">
-                              <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                  <form action="#">
+                              <div class="modal fade" id="modal-edit<?= $jadwal['id_jadwal'] ?>">
+                                <div class="modal-dialog modal-xl">
+                                  <div class="modal-content">
                                     <div class="modal-header">
                                       <h4 class="modal-title">Edit Jadwal</h4>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -319,72 +271,77 @@ include('header.php')
 
                                             <!-- /.card-header -->
                                             <div class="card-body">
-                                              <form action="">
+                                              <form action="lihat-jadwal.php" method="POST">
                                                 <div class="row">
                                                   <div class="col-md-6">
+
                                                     <!-- Periode -->
                                                     <div class="form-group">
                                                       <label>Periode</label>
-                                                      <select class="form-control select2bs4" style="width: 100%;">
-                                                        <option selected="selected">2020/2021 - Genap</option>
-                                                        <option>2020/2021 - Genap</option>
-                                                        <option>2020/2021 - Ganjil</option>
-                                                        <option>2019/2020 - Genap</option>
-                                                        <option>2019/2020 - Ganjil</option>
-                                                        <option>2018/2019 - Genap</option>
-                                                        <option>2018/2019 - Ganjil</option>
-                                                        <option>2017/2018 - Genap</option>
-                                                        <option>2017/2018 - Ganjil</option>
+                                                      <select name="periode" class="form-control select2bs4" style="width: 100%;">
+                                                        <option value="2020/2021 - Genap" selected="selected">2020/2021 - Genap</option>
+                                                        <option value="2020/2021 - Ganjil">2020/2021 - Ganjil</option>
+                                                        <option value="2019/2020 - Genap">2019/2020 - Genap</option>
+                                                        <option value="2019/2020 - Ganjil">2019/2020 - Ganjil</option>
+                                                        <option value="2018/2019 - Genap">2018/2019 - Genap</option>
+                                                        <option value="2018/2019 - Ganjil">2018/2019 - Ganjil</option>
+                                                        <option value="2017/2018 - Genap">2017/2018 - Genap</option>
+                                                        <option value="2017/2018 - Ganjil">2017/2018 - Ganjil</option>
                                                       </select>
                                                     </div>
+
 
                                                     <!-- Blok -->
                                                     <div class="form-group">
                                                       <label>Blok</label>
-                                                      <select class="form-control select2bs4" style="width: 100%;">
-                                                        <option selected="selected">Blok 3.3 Masalah Pada Remaja</option>
-                                                        <option>Blok 3.3 Masalah Pada Remaja</option>
-                                                        <option>Blok 3.4 Masalah Pada Dewasa I</option>
-                                                        <option>Blok 3.5 Masalah pada Dewasa II</option>
-                                                        <option>Blok 4.1 Seribu Hari Pertama Kehidupan </option>
-                                                        <option>Blok 4.2 Kegawatdaruratn</option>
-                                                        <option>Blok 4.3 Komprehensif Klinik</option>
-                                                        <option>Blok 4.4 Kesehatan Masyarakat</option>
+                                                      <select name="blok" class="form-control select2bs4" style="width: 100%;">
+                                                        <?php $queryBlok = mysqli_query($koneksi, "SELECT * FROM blok");
+                                                        while ($blok = mysqli_fetch_assoc($queryBlok)) {
+                                                        ?>
+                                                          <option value="<?= $blok['id_blok'] ?>" <?= $jadwal['id_blok'] == $blok['id_blok'] ? 'selected' : '' ?>><?= $blok['nama_blok'] ?></option>
+                                                        <?php } ?>
                                                       </select>
                                                     </div>
 
                                                     <!-- Angkatan -->
                                                     <div class="form-group">
                                                       <label>Angkatan</label>
-                                                      <select class="form-control select2bs4">
-                                                        <option selected="selected">2017</option>
-                                                        <option>2018</option>
+                                                      <select class="form-control select2bs4" name="angkatan">
+                                                        <option <?= $jadwal['angkatan'] == 17 ? 'selected' : '' ?> value="17">2017</option>
+                                                        <option <?= $jadwal['angkatan'] == 18 ? 'selected' : '' ?> value="18">2018</option>
                                                       </select>
                                                     </div>
 
-                                                    <!-- Hari, Tanggal, Tahun -->
+                                                    <!-- Date -->
                                                     <div class="form-group">
                                                       <label>Hari, Tanggal, Tahun</label>
-                                                      <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" />
-                                                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                        </div>
-                                                      </div>
+                                                      <input name="tanggal" type="date" class="form-control" value="<?= str_replace('/', '-', $jadwal['tanggal']) ?>" />
                                                     </div>
 
-                                                    <!-- Waktu -->
+                                                    <!-- time Picker -->
                                                     <div class="bootstrap-timepicker">
                                                       <div class="form-group">
                                                         <label>Waktu</label>
                                                         <div class="input-group date" id="timepicker" data-target-input="nearest">
-                                                          <input type="text" class="form-control datetimepicker-input" data-target="#timepicker" />
+                                                          <input name="jam" type="text" class="form-control datetimepicker-input" data-target="#timepicker" value="<?= $jadwal['jam'] ?>" />
                                                           <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
                                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                                           </div>
                                                         </div>
                                                       </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                      <label for="exampleSelectRounded0">Kelompok</label>
+                                                      <select name="kelompok" class="custom-select rounded-1" id="exampleSelectRounded0">
+                                                        <?php
+                                                        $queryKelompok = mysqli_query($koneksi, "SELECT * FROM kelompok");
+                                                        while ($kelompok = mysqli_fetch_assoc($queryKelompok)) {
+                                                        ?>
+                                                          <option value="<?= $kelompok['id_kelompok'] ?>" <?= $jadwal['id_kelompok'] == $kelompok['id_kelompok'] ? 'selected' : '' ?>><?= $kelompok['nama_kelompok'] ?></option>
+                                                        <?php } ?>
+                                                      </select>
+                                                    </div>
+
                                                   </div>
                                                   <div class="col-md-6">
                                                     <div class="form-group">
@@ -392,7 +349,7 @@ include('header.php')
                                                       <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                         </div>
-                                                        <input type="email" class="form-control" placeholder="Mata Kuliah">
+                                                        <input name="mata_kuliah" type="text" class="form-control" placeholder="Mata Kuliah" value="<?= $jadwal['mata_kuliah'] ?>">
                                                       </div>
                                                     </div>
                                                     <!-- /.form-group -->
@@ -400,53 +357,74 @@ include('header.php')
                                                     <div class="input-group mb-3">
                                                       <div class="input-group-prepend">
                                                       </div>
-                                                      <input type="email" class="form-control" placeholder="Ruang Kelas">
+                                                      <input name="ruang_kelas" type="text" class="form-control" placeholder="Ruang Kelas" value="<?= $jadwal['ruang_kelas'] ?>">
                                                     </div>
                                                     <!-- /.form-group -->
                                                     <div class="form-group">
+
                                                       <label for="exampleSelectRounded0">Sesi</label>
-                                                      <select class="custom-select rounded-1" id="exampleSelectRounded0">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
+                                                      <select name="sesi" class="custom-select rounded-1" id="exampleSelectRounded0">
+                                                        <?php
+                                                        $sesiArr = ['1', '2', '3', '4'];
+                                                        foreach ($sesiArr as $value) {
+                                                        ?>
+                                                          <option <?= $value == $jadwal['sesi'] ? 'selected' : '' ?> value="<?= $value ?>"><?= $value ?></option>
+                                                        <?php } ?>
                                                       </select>
                                                     </div>
 
                                                     <div class="form-group">
                                                       <label>Dokter</label>
-                                                      <select class="form-control select2bs4" style="width: 100%;">
-                                                        <option selected="selected">2020/2021 - Genap</option>
-                                                        <option>2020/2021 - Genap</option>
-                                                        <option>2020/2021 - Ganjil</option>
-                                                        <option>2019/2020 - Genap</option>
-                                                        <option>2019/2020 - Ganjil</option>
-                                                        <option>2018/2019 - Genap</option>
-                                                        <option>2018/2019 - Ganjil</option>
-                                                        <option>2017/2018 - Genap</option>
-                                                        <option>2017/2018 - Ganjil</option>
-                                                        <option>2020/2021 - Genap</option>
-                                                        <option>2020/2021 - Ganjil</option>
-                                                        <option>2019/2020 - Genap</option>
-                                                        <option>2019/2020 - Ganjil</option>
-                                                        <option>2018/2019 - Genap</option>
-                                                        <option>2018/2019 - Ganjil</option>
-                                                        <option>2017/2018 - Genap</option>
-                                                        <option>2017/2018 - Ganjil</option>
+                                                      <select name="pengajar" class="form-control select2bs4" style="width: 100%;">
+                                                        <?php
+                                                        $queryDokter = mysqli_query($koneksi, "SELECT * FROM pengajar WHERE role = 1");
+                                                        while ($dokter = mysqli_fetch_assoc($queryDokter)) {
+                                                        ?>
+                                                          <option value="<?= $dokter['id_pengajar'] ?>" <?= $jadwal['id_pengajar'] == $dokter['id_pengajar'] ? 'selected' : '' ?>><?= $dokter['nama'] ?></option>
+                                                        <?php } ?>
                                                       </select>
                                                     </div>
 
                                                     <div class="form-group">
                                                       <label for="exampleSelectRounded0">Status</label>
-                                                      <select class="custom-select rounded-1" id="exampleSelectRounded0">
-                                                        <option>Siap Belajar</option>
-                                                        <option>Pending</option>
-                                                        <option>Batal</option>
+                                                      <select name="status" class="custom-select rounded-1" id="exampleSelectRounded0">
+                                                        <?php
+                                                        $statusArr = ['0' => 'Pending', '1' => 'Siap Belajar', '2' => 'Ditolak'];
+                                                        foreach ($statusArr as $key => $value) {
+                                                          var_dump($value)
+                                                        ?>
+                                                          <option <?= $key == $jadwal['status'] ? 'selected' : '' ?> value="<?= $key ?>"><?= $value ?></option>
+                                                        <?php } ?>
+                                                        <!-- <option value="0">Pending</option>
+                                                        <option value="1">Siap Belajar</option>
+                                                        <option value="2">Batal</option> -->
                                                       </select>
                                                     </div>
+                                                    <input type="hidden" name="id_jadwal" value="<?= $jadwal['id_jadwal'] ?>">
 
                                                     <div class="btn-group-toggle" style="width: 100px; float: right;">
-                                                      <button type="button" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default" data-dismiss="modal">Submit</button>
+                                                      <button type="submit" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default">Submit</button>
+                                                    </div>
+
+
+                                                    <div class="modal fade" id="modal-default">
+                                                      <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                          <div class="modal-header">
+                                                            <h4 class="modal-title" style="margin: auto;">Data Berhasil Disimpan</h4>
+                                                          </div>
+                                                          <div class="modal-footer justify-content-between">
+                                                            <a href="lihat-jadwal.php">
+                                                              <button type="button" class="btn btn-default">Kembali ke Lihat Jadwal</button>
+                                                            </a>
+                                                            <a href="tambah-jadwal.php">
+                                                              <button type="button" class="btn btn-primary">Lanjut Tambah Jadwal</button>
+                                                            </a>
+                                                          </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                      </div>
+                                                      <!-- /.modal-dialog -->
                                                     </div>
                                                     <!-- /.modal -->
 
@@ -454,282 +432,58 @@ include('header.php')
                                                     <!-- /.form-group -->
                                                   </div>
                                                 </div>
-                                                <!-- /.col -->
-                                                <!-- /.col -->
+                                              </form>
                                             </div>
-                                  </form>
-                                  <!-- /.row -->
-                                </div>
-
-
-                                <!-- /.card -->
-                              </div>
-      </section>
-    </div>
-
-    </form>
-  </div>
-
-  <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-  </td>
-  </div>
-  </tr>
-
-  <tr>
-    <td>Selasa</td>
-    <td>10.00 - 10.50<br />
-      11.00 - 11.50
-    </td>
-    <td>Tutorial Skenario 4</td>
-    <td>Fakultas Kedokteran UII</td>
-    <td>2</td>
-    <td>Dokter Default</td>
-    <td>Siap belajar</td>
-    <td>
-      <div class="btn-group">
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-edit1">Edit</button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-hapus">Hapus</button>
-      </div>
-
-      <div class="modal fade" id="modal-hapus">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" style="margin: auto;">Apakah Anda Yakin Untuk Menghapus Data Tersebut ?</h4>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-              <a href="lihat-jadwal.php">
-                <button type="button" class="btn btn-primary">Ya</button>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="modal-edit1">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <form action="#">
-              <div class="modal-header">
-                <h4 class="modal-title">Edit Jadwal</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <section class="content">
-                  <div class="container-fluid">
-
-
-                    <!-- SELECT2 EXAMPLE -->
-                    <div class="card card-default">
-
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <form action="">
-                          <div class="row">
-                            <div class="col-md-6">
-                              <!-- Periode -->
-                              <div class="form-group">
-                                <label>Periode</label>
-                                <select class="form-control select2bs4" style="width: 100%;">
-                                  <option selected="selected">2020/2021 - Genap</option>
-                                  <option>2020/2021 - Genap</option>
-                                  <option>2020/2021 - Ganjil</option>
-                                  <option>2019/2020 - Genap</option>
-                                  <option>2019/2020 - Ganjil</option>
-                                  <option>2018/2019 - Genap</option>
-                                  <option>2018/2019 - Ganjil</option>
-                                  <option>2017/2018 - Genap</option>
-                                  <option>2017/2018 - Ganjil</option>
-                                </select>
-                              </div>
-
-                              <!-- Blok -->
-                              <div class="form-group">
-                                <label>Blok</label>
-                                <select class="form-control select2bs4" style="width: 100%;">
-                                  <option selected="selected">Blok 3.3 Masalah Pada Remaja</option>
-                                  <option>Blok 3.3 Masalah Pada Remaja</option>
-                                  <option>Blok 3.4 Masalah Pada Dewasa I</option>
-                                  <option>Blok 3.5 Masalah pada Dewasa II</option>
-                                  <option>Blok 4.1 Seribu Hari Pertama Kehidupan </option>
-                                  <option>Blok 4.2 Kegawatdaruratn</option>
-                                  <option>Blok 4.3 Komprehensif Klinik</option>
-                                  <option>Blok 4.4 Kesehatan Masyarakat</option>
-                                </select>
-                              </div>
-
-                              <!-- Angkatan -->
-                              <div class="form-group">
-                                <label>Angkatan</label>
-                                <select class="form-control select2bs4">
-                                  <option selected="selected">2017</option>
-                                  <option>2018</option>
-                                </select>
-                              </div>
-
-                              <!-- Hari, Tanggal, Tahun -->
-                              <div class="form-group">
-                                <label>Hari, Tanggal, Tahun</label>
-                                <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                  <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" />
-                                  <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <!-- Waktu -->
-                              <div class="bootstrap-timepicker">
-                                <div class="form-group">
-                                  <label>Waktu</label>
-                                  <div class="input-group date" id="timepicker" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input" data-target="#timepicker" />
-                                    <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
-                                      <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                          </div>
+                                        </div>
+                                      </section>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                <label>Mata Kuliah</label>
-                                <div class="input-group mb-3">
-                                  <div class="input-group-prepend">
-                                  </div>
-                                  <input type="email" class="form-control" placeholder="Mata Kuliah">
-                                </div>
-                              </div>
-                              <!-- /.form-group -->
-                              <label>Ruang Kelas</label>
-                              <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                </div>
-                                <input type="email" class="form-control" placeholder="Ruang Kelas">
-                              </div>
-                              <!-- /.form-group -->
-                              <div class="form-group">
-                                <label for="exampleSelectRounded0">Sesi</label>
-                                <select class="custom-select rounded-1" id="exampleSelectRounded0">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                </select>
-                              </div>
-
-                              <div class="form-group">
-                                <label>Dokter</label>
-                                <select class="form-control select2bs4" style="width: 100%;">
-                                  <option selected="selected">2020/2021 - Genap</option>
-                                  <option>2020/2021 - Genap</option>
-                                  <option>2020/2021 - Ganjil</option>
-                                  <option>2019/2020 - Genap</option>
-                                  <option>2019/2020 - Ganjil</option>
-                                  <option>2018/2019 - Genap</option>
-                                  <option>2018/2019 - Ganjil</option>
-                                  <option>2017/2018 - Genap</option>
-                                  <option>2017/2018 - Ganjil</option>
-                                  <option>2020/2021 - Genap</option>
-                                  <option>2020/2021 - Ganjil</option>
-                                  <option>2019/2020 - Genap</option>
-                                  <option>2019/2020 - Ganjil</option>
-                                  <option>2018/2019 - Genap</option>
-                                  <option>2018/2019 - Ganjil</option>
-                                  <option>2017/2018 - Genap</option>
-                                  <option>2017/2018 - Ganjil</option>
-                                </select>
-                              </div>
-
-                              <div class="form-group">
-                                <label for="exampleSelectRounded0">Status</label>
-                                <select class="custom-select rounded-1" id="exampleSelectRounded0">
-                                  <option>Siap Belajar</option>
-                                  <option>Pending</option>
-                                  <option>Batal</option>
-                                </select>
-                              </div>
-
-                              <div class="btn-group-toggle" style="width: 100px; float: right;">
-                                <button type="button" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default" data-dismiss="modal">Submit</button>
-                              </div>
                               <!-- /.modal -->
-
-                              <!-- /.form-group -->
-                              <!-- /.form-group -->
-                            </div>
-                          </div>
-                          <!-- /.col -->
-                          <!-- /.col -->
-                      </div>
-            </form>
-            <!-- /.row -->
+                            </td>
+                          </tr>
+                        <?php } ?>
+                      <tfoot>
+                        <tr>
+                          <th>Hari</th>
+                          <th>Waktu</th>
+                          <th>Matakuliah</th>
+                          <th>Ruang Kelas</th>
+                          <th>Sesi</th>
+                          <th>Dokter</th>
+                          <th>Status</th>
+                          <th>Aksi</th>
+                        </tr>
+                      </tfoot>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
           </div>
-
-
-          <!-- /.card -->
+          <!-- /.row -->
         </div>
-        </section>
-      </div>
-
-      </form>
-      </div>
-
-      <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-    </td>
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
     </div>
-  </tr>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" style="background-color: #EBF6FF;">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 1.0.0
+      </div>
+      <strong>MedSch Web Admin</strong>
+    </footer>
 
-  <tfoot>
-    <tr>
-      <th>Hari</th>
-      <th>Waktu</th>
-      <th>Matakuliah</th>
-      <th>Ruang Kelas</th>
-      <th>Sesi</th>
-      <th>Dokter</th>
-      <th>Status</th>
-      <th>Aksi</th>
-    </tr>
-  </tfoot>
-  </table>
-  </div>
-  <!-- /.card-body -->
-  </div>
-  <!-- /.card -->
-  </div>
-  <!-- /.col -->
-  </div>
-  <!-- /.row -->
-  </div>
-  <!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer" style="background-color: #EBF6FF;">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 1.0.0
-    </div>
-    <strong>MedSch Web Admin</strong>
-  </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
 

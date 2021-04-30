@@ -1,3 +1,21 @@
+<?php
+include('koneksi.php');
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+if (isset($username) && isset($password)) {
+	$login = mysqli_query($koneksi, "SELECT * FROM admin WHERE username = '$username' AND password = '$password'");
+	$checkAuth = mysqli_num_rows($login);
+
+	if ($checkAuth > 0) {
+		session_start();
+		$_SESSION['username'] = $username;
+		$_SESSION['status'] = "login";
+		header("location:index.php");
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -17,21 +35,21 @@
 	<div class="judul" style="margin-top: 120px; margin-left:200px">
 		<h1>Medical Schedule</h1>
 	</div>
-	<div class="penjelasan-medsch" style="margin-top: 100px; margin-left:200px">
+	<!-- <div class="penjelasan-medsch" style="margin-top: 100px; margin-left:200px">
 		<h3>merupakan sebuah aplikasi yang dibuat dengan tujuan memudahkan mahasiswa </br>
 			Fakultas Kedokteran UII dalam memantau jadwal kuliah yang sedang berlangsung.</h3>
-	</div>
+	</div> -->
 
 	<div class="container">
 		<div class="login-content" style="margin-top: 30px;">
-			<form action="dashboard.php">
+			<form action="login.php" method="POST">
 				<div class="input-div one">
 					<div class="i">
 						<i class="fas fa-user"></i>
 					</div>
 					<div class="div">
 						<h5 style="margin-top: 0px;">Username</h5>
-						<input type="text" class="input">
+						<input name="username" type="text" class="input">
 					</div>
 				</div>
 				<div class="input-div pass">
@@ -40,7 +58,7 @@
 					</div>
 					<div class="div">
 						<h5 style="margin-top: 0px;">Password</h5>
-						<input type="password" class="input">
+						<input name="password" type="password" class="input">
 					</div>
 				</div>
 				<input href="dashboard.php" type="submit" class="btn" value="Login">

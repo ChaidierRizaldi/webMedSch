@@ -1,177 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MedSch | Tambah Jadwal</title>
+<?php
+include('header.php');
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <!-- Bootstrap4 Duallistbox -->
-  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
-  <!-- BS Stepper -->
-  <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
-  <!-- dropzonejs -->
-  <link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-</head>
+if (isset($_POST['tambah_dokter'])) {
+  $nama = $_POST['nama'];
+  $jabatan = $_POST['jabatan'];
+  $nidn = $_POST['nidn'];
+  $bidang_kepakaran = $_POST['bidang_kepakaran'];
+  $no_telp = $_POST['no_telp'];
+  $email = $_POST['email'];
+
+  $query = "INSERT INTO pengajar SET 
+              nama = '$nama', 
+              jabatan = '$jabatan', 
+              bidang_kepakaran = '$bidang_kepakaran', 
+              nidn = '$nidn', 
+              no_telp = '$no_telp', 
+              email = '$email',
+              role = 1";
+
+  mysqli_query($koneksi, $query);
+}
+?>
 
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #EBF6FF;">
-      <!-- Left navbar links -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-      </ul>
-
-      <!-- Right navbar links -->
-      <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="nav-icon fas fa-users-cog"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="profile.php" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/profile-setting.png" alt="User Avatar" class="img-size-50 mr-3">
-                <div class="media-body">
-                  <p class="text-sm">Profile</p>
-                  <p class="text-sm text-muted"></p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="login.php" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/logout.png" alt="User Avatar" class="img-size-50 mr-3">
-                <div class="media-body">
-                  <p class="text-sm">Logout</p>
-                  <p class="text-sm text-muted"></p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-
-          </div>
-        </li>
-        <!-- Notifications Dropdown Menu -->
-
-      </ul>
-    </nav>
+    <?php include('navbar.php') ?>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color: #84AECF;">
-      <!-- Brand Logo -->
-      <a href="dashboard.php" class="brand-link">
-        <img src="dist/img/logo-skripsi.png" alt="AdminLTE Logo" class="brand-image ">
-        <span class="brand-text font-weight-light">&nbsp; Web Version</span>
-      </a>
-
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-          <div class="image">
-            <img src="dist/img/profile-admin.png" class="img-circle elevation-2" alt="User Image">
-          </div>
-          <div class="info">
-            <a href="#" class="d-block">Admin</a>
-          </div>
-        </div>
-
-        <!-- SidebarSearch Form -->
-
-        <!-- Sidebar Menu -->
-        <nav class="mt-2">
-          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-calendar-week"></i>
-                <p>
-                  Jadwal Kuliah
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="lihat-jadwal.php" class="nav-link">
-                    <i class="nav-icon fas fa-calendar-alt"></i>
-                    <p>Lihat Jadwal</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="assign-kelompok-mahasiswa.php" class="nav-link">
-                    <i class="nav-icon fas fa-user-friends"></i>
-                    <p>Assign Kelompok</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="tambah-jadwal.php" class="nav-link">
-                    <i class="nav-icon fas fa-calendar-plus"></i>
-                    <p>Tambah Jadwal</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-address-book"></i>
-                <p>
-                  Daftar Dokter
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="lihat-dokter.php" class="nav-link">
-                    <i class="nav-icon fas fa-list-ul"></i></span>
-                    <p>Lihat Dokter</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="tambah-dokter.php" class="nav-link">
-                    <i class="nav-icon fas fa-edit"></i></span>
-                    <p>Tambah Dokter</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
-      </div>
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex"></div>
-      <!-- /.sidebar -->
-    </aside>
+    <?php include('sidebar.php') ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="background-color: #D9E1E8;">
@@ -199,92 +60,93 @@
           <div class="card card-default">
 
             <!-- /.card-header -->
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
+            <form method="POST">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
 
-                  <!-- Nama Dokter -->
-                  <label>Nama Dokter</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                    </div>
-                    <input type="text" class="form-control" placeholder="Nama Dokter">
-                  </div>
-
-                  <!-- Jabatan -->
-                  <label>Jabatan</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                    </div>
-                    <input type="text" class="form-control" placeholder="Jabatan">
-                  </div>
-
-                  <!-- NIDN -->
-                  <label>NIDN</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                    </div>
-                    <input type="text" class="form-control" placeholder="NIDN">
-                  </div>
-                </div>
-
-
-                <div class="col-md-6">
-                  <!-- No. HP -->
-                  <label>No. HP</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                    </div>
-                    <input type="text" class="form-control" placeholder="No. HP">
-                  </div>
-
-                  <!-- Email -->
-                  <label>Email</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                    </div>
-                    <input type="email" class="form-control" placeholder="Email">
-                  </div>
-
-                  <!-- Button -->
-                  <div class="btn-group-toggle" style="width: 100px; float: right;">
-                    <button type="button" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default">Submit</button>
-                  </div>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="modal-default">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header" style="text-align: center">
-                          <h4 class="modal-title" style="margin: auto">Data Berhasil Disimpan</h4>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                          <a href="lihat-dokter.php">
-                            <button type="button" class="btn btn-default">Kembali ke Lihat Dokter</button>
-                          </a>
-                          <a href="tambah-dokter.php">
-                            <button type="button" class="btn btn-primary">Lanjut Tambah Dokter</button>
-                          </a>
-                        </div>
+                    <!-- Nama Dokter -->
+                    <label>Nama Dokter</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
                       </div>
-                      <!-- /.modal-content -->
+                      <input name="nama" type="text" class="form-control" placeholder="Nama Dokter">
                     </div>
-                    <!-- /.modal-dialog -->
+
+                    <!-- Jabatan -->
+                    <label>Jabatan</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                      </div>
+                      <input name="jabatan" type="text" class="form-control" placeholder="Jabatan">
+                    </div>
+
+                    <!-- NIDN -->
+                    <label>NIDN</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                      </div>
+                      <input name="nidn" type="text" class="form-control" placeholder="NIDN">
+                    </div>
                   </div>
-                  <!-- /.modal -->
 
-                  <!-- /.form-group -->
-                  <!-- /.form-group -->
+
+                  <div class="col-md-6">
+                    <label>Bidang Kepakaran</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                      </div>
+                      <input name="bidang_kepakaran" type="text" class="form-control" placeholder="Bidang Kepakaran">
+                    </div>
+                    <!-- No. HP -->
+                    <label>No. HP</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                      </div>
+                      <input name="no_telp" type="text" class="form-control" placeholder="No. HP">
+                    </div>
+
+                    <!-- Email -->
+                    <label>Email</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                      </div>
+                      <input name="email" type="email" class="form-control" placeholder="Email">
+                    </div>
+
+                    <!-- Button -->
+                    <div class="btn-group-toggle" style="width: 100px; float: right;">
+                      <button type="button" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default">Submit</button>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal-default">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header" style="text-align: center">
+                            <h4 class="modal-title" style="margin: auto">Data Berhasil Disimpan</h4>
+                          </div>
+                          <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+                            <button name="tambah_dokter" type="submit" class="btn btn-primary">Ya</button>
+                          </div>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+
+                    <!-- /.form-group -->
+                    <!-- /.form-group -->
+                  </div>
                 </div>
+                <!-- /.col -->
               </div>
-              <!-- /.col -->
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
+            </form>
+            <!-- /.col -->
           </div>
-
-
-          <!-- /.card -->
+          <!-- /.row -->
         </div>
       </section>
     </div>
