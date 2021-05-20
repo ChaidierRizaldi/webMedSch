@@ -3,8 +3,9 @@
 
 <?php
 include('header.php');
-$idDokter = $_GET['idDokter'];
+
 if (isset($_POST['edit_dokter'])) {
+  $idDokter = $_POST['id_dokter'];
   $nama = $_POST['nama'];
   $jabatan = $_POST['jabatan'];
   $nidn = $_POST['nidn'];
@@ -13,12 +14,14 @@ if (isset($_POST['edit_dokter'])) {
   $email = $_POST['email'];
 
   $editDokter = mysqli_query($koneksi, "UPDATE pengajar 
-                              SET nama = '$nama', jabatan = '$jabatan', nidn = '$nidn', bidang_kepakaran = '$bidang_kepakaran',
-                              no_telp = '$no_telp', email = '$email' WHERE id_pengajar = '$idDokter'");
+                SET nama = '$nama', jabatan = '$jabatan', nidn = '$nidn', bidang_kepakaran = '$bidang_kepakaran',
+                no_telp = '$no_telp', email = '$email' WHERE id_pengajar = '$idDokter'");
 }
 
-if (isset($idDokter)) {
+if (isset($_GET['idDokter'])) {
+  $idDokter = $_GET['idDokter'];
   $delete = mysqli_query($koneksi, "DELETE FROM pengajar WHERE id_pengajar = '$idDokter'");
+  var_dump($idDokter);
 }
 ?>
 
@@ -69,6 +72,7 @@ if (isset($idDokter)) {
                         <th>No</th>
                         <th>Nama Dokter</th>
                         <th>Jabatan</th>
+                        <th>Bidang Kepakaran</th>
                         <th>NIDN</th>
                         <th>No. HP</th>
                         <th>Email</th>
@@ -85,9 +89,10 @@ if (isset($idDokter)) {
                           <td><?= $no++ ?></td>
                           <td><?= $result['nama'] ?></td>
                           <td><?= $result['jabatan'] ?> </td>
+                          <td><?= $result['bidang_kepakaran'] ?></td>
                           <td><?= $result['nidn'] ?></td>
                           <td><?= $result['no_telp'] ?></td>
-                          <td><?= $result['id_pengajar'] ?></td>
+                          <td><?= $result['email'] ?></td>
                           <td>
                             <div class="btn-group">
                               <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-edit<?= $result['id_pengajar'] ?>">Edit</button>
@@ -104,9 +109,8 @@ if (isset($idDokter)) {
                                   </div>
                                   <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-                                    <span><?= $result['id_pengajar'] ?></span>
                                     <a href="lihat-dokter.php?idDokter=<?= $result['id_pengajar'] ?>">
-                                      <button type="button" class="btn btn-primary">Ya</button>
+                                      <button type="submit" name="hapus_dokter" class="btn btn-primary">Ya</button>
                                     </a>
                                   </div>
                                 </div>
@@ -130,7 +134,7 @@ if (isset($idDokter)) {
                                         <div class="card card-default">
                                           <!-- /.card-header -->
                                           <div class="card-body">
-                                            <form method="POST" action="lihat-dokter.php?idDokter=<?= $result['id_pengajar'] ?>">
+                                            <form method="POST" action="lihat-dokter.php">
                                               <div class="card-body">
                                                 <div class="row">
                                                   <div class="col-md-6">
@@ -183,6 +187,7 @@ if (isset($idDokter)) {
                                                       </div>
                                                       <input name="email" type="email" class="form-control" placeholder="Email" value="<?= $result['email'] ?>">
                                                     </div>
+                                                    <input type="hidden" name="id_dokter" value="<?= $result['id_pengajar'] ?>">
 
                                                     <!-- Button -->
                                                     <div class="btn-group-toggle" style="width: 100px; float: right;">
@@ -242,6 +247,7 @@ if (isset($idDokter)) {
                         <th>No</th>
                         <th>Nama Dokter</th>
                         <th>Jabatan</th>
+                        <th>Bidang Kepakaran</th>
                         <th>NIDN</th>
                         <th>No. HP</th>
                         <th>Email</th>

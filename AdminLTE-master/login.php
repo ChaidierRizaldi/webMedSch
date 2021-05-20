@@ -1,9 +1,9 @@
 <?php
 include('koneksi.php');
-$username = $_POST['username'];
-$password = $_POST['password'];
 
-if (isset($username) && isset($password)) {
+if (isset($_POST['login'])) {
+	$username = $_POST['username'];
+	$password = $_POST['password'];
 	$login = mysqli_query($koneksi, "SELECT * FROM admin WHERE username = '$username' AND password = '$password'");
 	$checkAuth = mysqli_num_rows($login);
 
@@ -35,10 +35,10 @@ if (isset($username) && isset($password)) {
 	<div class="judul" style="margin-top: 120px; margin-left:200px">
 		<h1>Medical Schedule</h1>
 	</div>
-	<!-- <div class="penjelasan-medsch" style="margin-top: 100px; margin-left:200px">
+	<div class="penjelasan-medsch" style="margin-top: 100px; margin-left:200px">
 		<h3>merupakan sebuah aplikasi yang dibuat dengan tujuan memudahkan mahasiswa </br>
 			Fakultas Kedokteran UII dalam memantau jadwal kuliah yang sedang berlangsung.</h3>
-	</div> -->
+	</div>
 
 	<div class="container">
 		<div class="login-content" style="margin-top: 30px;">
@@ -61,7 +61,7 @@ if (isset($username) && isset($password)) {
 						<input name="password" type="password" class="input">
 					</div>
 				</div>
-				<input href="dashboard.php" type="submit" class="btn" value="Login">
+				<input href="index.php" name="login" type="submit" class="btn">
 			</form>
 		</div>
 	</div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
 
 * {
   /* padding: 0;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   overflow: hidden;
 }
 
@@ -64,7 +64,6 @@ body {
   text-align: center;
 }
 
-
 form {
   width: 360px;
 }
@@ -90,33 +89,33 @@ form {
 }
 
 .i i {
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.input-div>div {
+.input-div > div {
   position: relative;
   height: 45px;
 }
 
-.input-div>div>h5 {
+.input-div > div > h5 {
   position: absolute;
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: #999;
   font-size: 18px;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .input-div:before,
 .input-div:after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   width: 0%;
   height: 2px;
-  background-color: #9BC7EA;
-  transition: .4s;
+  background-color: #9bc7ea;
+  transition: 0.4s;
 }
 
 .input-div:before {
@@ -132,16 +131,16 @@ form {
   width: 50%;
 }
 
-.input-div.focus>div>h5 {
+.input-div.focus > div > h5 {
   top: -5px;
   font-size: 15px;
 }
 
-.input-div.focus>.i>i {
-  color: #9BC7EA;
+.input-div.focus > .i > i {
+  color: #9bc7ea;
 }
 
-.input-div>div>input {
+.input-div > div > input {
   position: absolute;
   left: 0;
   top: 0;
@@ -153,7 +152,7 @@ form {
   padding: 0.5rem 0.7rem;
   font-size: 1.2rem;
   color: #555;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
 }
 
 .input-div.pass {
@@ -166,11 +165,11 @@ a {
   text-decoration: none;
   color: #999;
   font-size: 0.9rem;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 a:hover {
-  color: #9BC7EA;
+  color: #9bc7ea;
 }
 
 .btn {
@@ -181,21 +180,20 @@ a:hover {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #EBF6FF, #B4DDFF, #9BC7EA);
+  background-image: linear-gradient(to right, #ebf6ff, #b4ddff, #9bc7ea);
   background-size: 200%;
   font-size: 1.2rem;
   color: rgb(167, 150, 150);
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   text-transform: uppercase;
   margin: 1rem 0;
   cursor: pointer;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .btn:hover {
   background-position: right;
 }
-
 
 @media screen and (max-width: 1050px) {
   .container {

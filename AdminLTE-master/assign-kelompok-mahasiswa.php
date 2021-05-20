@@ -3,9 +3,9 @@
 
 <?php
 include('header.php');
-$kelompok = $_POST['idKelompok'];
-$mhs = $_POST['idMhs'];
-if (isset($kelompok) && isset($mhs)) {
+if (isset($_POST['update_kelompok'])) {
+  $kelompok = $_POST['idKelompok'];
+  $mhs = $_POST['idMhs'];
   for ($i = 0; $i < count($kelompok); $i++) {
     $updateKelompok = "UPDATE mahasiswa SET id_kelompok = '$kelompok[$i]' WHERE id_mhs = '$mhs[$i]'";
     mysqli_query($koneksi, $updateKelompok);
@@ -150,7 +150,7 @@ if (isset($kelompok) && isset($mhs)) {
 
                     </table>
                     <div class="btn-group-toggle" style="width: 100px; float: right; margin-top: 30px;">
-                      <button type="submit" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default" data-dismiss="modal">Submit</button>
+                      <button type="submit" name="update_kelompok" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default" data-dismiss="modal">Submit</button>
                     </div>
                   </div>
                   <!-- /.card-body -->

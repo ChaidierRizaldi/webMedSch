@@ -1,3 +1,21 @@
+<head>
+    <style>
+        .notification {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification .badge {
+            position: absolute;
+            top: -10px;
+            right: -6px;
+            padding: 5px 10px;
+            border-radius: 50%;
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
 <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color: #84AECF;">
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
@@ -24,8 +42,17 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+                <div class="notification">
+                    <?php
+                    $query = mysqli_query($koneksi, "SELECT COUNT(status) AS jadwalDitolak FROM jadwal WHERE status = 2 ");
+                    $data = mysqli_fetch_assoc($query);
+                    if ($data['jadwalDitolak'] > 0) {
+                    ?>
+                        <span class="badge"><?= $data['jadwalDitolak'] ?></span>
+                    <?php } ?>
+                </div>
 
-                <li class="nav-item">
+                <li class="nav-item ">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-calendar-week"></i>
                         <p>
@@ -35,9 +62,17 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="lihat-jadwal.php" class="nav-link">
+                            <a href="lihat-jadwal.php" class="nav-link notification">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
+                                <?php
+                                if ($data['jadwalDitolak'] > 0) {
+                                ?>
+                                    <span class="badge" style="right: 70px; top: 10px;"><?= $data['jadwalDitolak'] ?></span>
+                                <?php } ?>
                                 <p>Lihat Jadwal</p>
+                                <!-- <div class="notification"> -->
+
+                                <!-- </div> -->
                             </a>
                         </li>
                         <li class="nav-item">

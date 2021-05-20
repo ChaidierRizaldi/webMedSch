@@ -3,14 +3,16 @@
 
 <?php
 include('header.php');
-$passwordBaru = $_POST['password_baru'];
-$passwordKonf = $_POST['password_konf'];
+if (isset($_POST['update_password'])) {
+  $passwordBaru = $_POST['password_baru'];
+  $passwordKonf = $_POST['password_konf'];
 
-if (isset($passwordBaru) && isset($passwordKonf) && $passwordKonf == $passwordBaru) {
-  $ubahPass = mysqli_query($koneksi, "UPDATE admin SET password = '$passwordBaru' WHERE id_admin = 1");
-  if ($ubahPass) {
-    // session_destroy();
-    header('location:index.php');
+  if ($passwordKonf == $passwordBaru) {
+    $ubahPass = mysqli_query($koneksi, "UPDATE admin SET password = '$passwordBaru' WHERE id_admin = 1");
+    if ($ubahPass) {
+      // session_destroy();
+      header('location:index.php');
+    }
   }
 }
 ?>
@@ -93,7 +95,7 @@ if (isset($passwordBaru) && isset($passwordKonf) && $passwordKonf == $passwordBa
 
 
                         <div class="btn-group-toggle" style="width: 100px; float: right;">
-                          <button type="submit" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default">Submit</button>
+                          <button type="submit" name="update_password" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default">Submit</button>
                         </div>
 
 

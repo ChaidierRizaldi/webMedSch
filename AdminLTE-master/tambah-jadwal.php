@@ -3,22 +3,24 @@
 
 <?php
 include('header.php');
-$idKelompok = $_POST['kelompok'];
-$periode = $_POST['periode'];
-$idBlok = $_POST['blok'];
-$angkatan = $_POST['angkatan'];
-$date = str_replace('/', '-', $_POST['tanggal']);
-$tanggal = date('Y/m/d');
-$jam = $_POST['jam'];
-$mataKuliah = $_POST['mata_kuliah'];
-$ruangKelas = $_POST['ruang_kelas'];
-$sesi = $_POST['sesi'];
-$idDokter = $_POST['pengajar'];
-$status = $_POST['status'];
+if (isset($_POST['tambah_jadwal'])) {
+  $idKelompok = $_POST['kelompok'];
+  $periode = $_POST['periode'];
+  $idBlok = $_POST['blok'];
+  $angkatan = $_POST['angkatan'];
+  $date = str_replace('/', '-', $_POST['tanggal']);
+  $tanggal = date('Y/m/d');
+  $jam = $_POST['jam'];
+  $mataKuliah = $_POST['mata_kuliah'];
+  $ruangKelas = $_POST['ruang_kelas'];
+  $sesi = $_POST['sesi'];
+  $idDokter = $_POST['pengajar'];
+  $status = $_POST['status'];
 
-$queryInsert = "INSERT INTO jadwal (id_pengajar, id_kelompok, id_blok, tanggal, jam, mata_kuliah, ruang_kelas, status, sesi, periode, angkatan) 
+  $queryInsert = "INSERT INTO jadwal (id_pengajar, id_kelompok, id_blok, tanggal, jam, mata_kuliah, ruang_kelas, status, sesi, periode, angkatan) 
                 VALUE ('$idDokter', '$idKelompok', '$idBlok', '$tanggal', '$jam', '$mataKuliah', '$ruangKelas', '$status', '$sesi', '$periode', '$angkatan')";
-$msg = mysqli_query($koneksi, $queryInsert);
+  $msg = mysqli_query($koneksi, $queryInsert);
+}
 ?>
 
 <body class="hold-transition sidebar-mini">

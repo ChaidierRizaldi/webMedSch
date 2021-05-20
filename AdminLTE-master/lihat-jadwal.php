@@ -16,14 +16,25 @@ $periodeArr = [
 ];
 
 // FILTER JADWAL
-$filterBlok = $_POST['id_blok'];
-$filterAngkatan = $_POST['filter_angkatan'];
-$filterPeriode = $_POST['filter_periode'];
-$id_jadwal = $_POST['idJadwal'];
+$filterBlok = null;
+$filterAngkatan = null;
+$filterPeriode = null;
+$id_jadwal = null;
 
 $query1 = "SELECT * FROM jadwal AS j
           INNER JOIN pengajar AS p ON p.id_pengajar = j.id_pengajar 
           INNER JOIN kelompok as kl ON kl.id_kelompok = j.id_kelompok";
+
+if (isset($_POST['tampilkanJadwal'])) {
+  $filterBlok = $_POST['id_blok'];
+  $filterAngkatan = $_POST['filter_angkatan'];
+  $filterPeriode = $_POST['filter_periode'];
+
+  $query1 = "SELECT * FROM jadwal AS j
+            INNER JOIN pengajar AS p ON p.id_pengajar = j.id_pengajar 
+            INNER JOIN kelompok as kl ON kl.id_kelompok = j.id_kelompok 
+            WHERE j.id_blok = $filterBlok AND j.angkatan = $filterAngkatan AND j.periode = '$filterPeriode'";
+}
 
 if (isset($_POST['tampilkanSemua'])) {
   $filterBlok = null;
@@ -44,35 +55,41 @@ if (isset($_POST['jadwalDitolak'])) {
 }
 
 // UPDATE JADWAL
-$idKelompok = $_POST['kelompok'];
-$periode = $_POST['periode'];
-$idBlok = $_POST['blok'];
-$angkatan = $_POST['angkatan'];
-$date = str_replace('/', '-', $_POST['tanggal']);
-$tanggal = date('Y/m/d');
-$jam = $_POST['jam'];
-$mataKuliah = $_POST['mata_kuliah'];
-$ruangKelas = $_POST['ruang_kelas'];
-$sesi = $_POST['sesi'];
-$idDokter = $_POST['pengajar'];
-$status = $_POST['status'];
-$idJadwal = $_POST['id_jadwal'];
+if (isset($_POST['update_jadwal'])) {
+  $id_jadwal = $_POST['idJadwal'];
+  $idKelompok = $_POST['kelompok'];
+  $periode = $_POST['periode'];
+  $idBlok = $_POST['blok'];
+  $angkatan = $_POST['angkatan'];
+  $date = str_replace('/', '-', $_POST['tanggal']);
+  $tanggal = date('Y/m/d');
+  $jam = $_POST['jam'];
+  $mataKuliah = $_POST['mata_kuliah'];
+  $ruangKelas = $_POST['ruang_kelas'];
+  $sesi = $_POST['sesi'];
+  $idDokter = $_POST['pengajar'];
+  $status = $_POST['status'];
+  $idJadwal = $_POST['id_jadwal'];
 
-$updateJadwal = mysqli_query($koneksi, "UPDATE jadwal 
+  $updateJadwal = mysqli_query($koneksi, "UPDATE jadwal 
                         SET id_kelompok = '$idKelompok', periode = '$periode', id_blok = '$idBlok',
                         angkatan = '$angkatan', tanggal = '$tanggal', jam = '$jam', mata_kuliah = '$mataKuliah',
                         ruang_kelas = '$ruangKelas', sesi = '$sesi', id_pengajar = '$idDokter', status = '$status'
                         WHERE id_jadwal = '$idJadwal'");
 
-// var_dump($updateJadwal);
-
+  // var_dump($updateJadwal);
+}
 // HAPUS JADWAL
-if (isset($id_jadwal)) {
+if (isset($_GET['id_jadwal'])) {
   mysqli_query($koneksi, "DELETE FROM jadwal WHERE id_jadwal = '$id_jadwal'");
   $id_jadwal = '';
 }
 
 ?>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="dist/css/style.css">
+</head>
 
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -124,7 +141,7 @@ if (isset($id_jadwal)) {
                                 <label>Periode</label>
                               </div>
                               <select name="filter_periode" class="form-control select2bs4 input-group-sm" style="width: 40%;">
-                                <option>Pilih Periode</option>
+                                <option value="0">Pilih Periode</option>
                                 <?php
                                 foreach ($periodeArr as $value) {
                                 ?>
@@ -138,7 +155,7 @@ if (isset($id_jadwal)) {
                                 <label>Blok</label>
                               </div>
                               <select name="id_blok" class="form-control select2bs4" style="width: 40%;">
-                                <option value="">Pilih Blok</option>
+                                <option value="0">Pilih Blok</option>
                                 <?php
                                 $queryBlok = mysqli_query($koneksi, "SELECT * FROM blok");
                                 while ($blok = mysqli_fetch_assoc($queryBlok)) {
@@ -154,21 +171,29 @@ if (isset($id_jadwal)) {
                         <div class="col-md-5">
                           <!-- /.form-group -->
                           <!-- <div style="float: right;"> -->
-                          <div class="form-group">
+                          <div class="form-group" style="float: right">
                             <div class="row">
                               <div style="padding: 6px; margin-right: 2px;">
                                 <label>Angkatan</label>
                               </div>
-                              <select name="filter_angkatan" class="form-control select2bs4" style="width: 75%;">
-                                <option value="">Pilih Angkatan</option>
+                              <select name="filter_angkatan" class="form-control select2bs4" style="width: 60%;">
+                                <option value="0">Pilih Angkatan</option>
                                 <option <?= $filterAngkatan == 17 ? 'selected' : '' ?> value="17">2017</option>
                                 <option <?= $filterAngkatan == 18 ? 'selected' : '' ?> value="18">2018</option>
                               </select>
                             </div>
-                            <div style="float: right;">
+                            <div>
                               <button name="tampilkanSemua" type="submit" class="btn btn-primary">Tampilkan Semua</button>
                               <button name="tampilkanJadwal" type="submit" class="btn btn-primary">Tampilkan Filter</button>
-                              <button name="jadwalDitolak" type="submit" class="btn btn-danger">Jadwal Ditolak</button>
+
+                              <button name="jadwalDitolak" type="submit" class="btn btn-danger notification">
+                                <?php
+                                $query = mysqli_query($koneksi, "SELECT COUNT(status) AS jadwalDitolak FROM jadwal WHERE status = 2 ");
+                                $data = mysqli_fetch_assoc($query);
+                                if ($data['jadwalDitolak'] > 0) {
+                                ?>
+                                  <span class="badge"><?= $data['jadwalDitolak'] ?></span>
+                                <?php } ?></span>Jadwal Ditolak</button>
                             </div>
                           </div>
                           <!-- </div> -->
@@ -205,12 +230,6 @@ if (isset($id_jadwal)) {
                       </thead>
                       <tbody>
                         <?php
-                        if (isset($filterBlok) && isset($filterAngkatan) && isset($filterPeriode) && !isset($_GET['jadwalDitolak'])) {
-                          $query1 = "SELECT * FROM jadwal AS j
-                              INNER JOIN pengajar AS p ON p.id_pengajar = j.id_pengajar 
-                              INNER JOIN kelompok as kl ON kl.id_kelompok = j.id_kelompok 
-                              WHERE j.id_blok = $filterBlok AND j.angkatan = $filterAngkatan AND j.periode = '$filterPeriode'";
-                        }
                         $queryJadwal = mysqli_query($koneksi, $query1);
                         while ($jadwal = mysqli_fetch_assoc($queryJadwal)) {
                         ?>
@@ -236,7 +255,7 @@ if (isset($id_jadwal)) {
                               </div>
 
                               <div class="modal fade" id="modal-hapus<?= $jadwal['id_jadwal'] ?>">
-                                <input type="hidden" name="id_jadwal" value="<?= $jadwal['id_jadwal'] ?>">
+                                <!-- <input type="hidden" name="id_jadwal" value="<?= $jadwal['id_jadwal'] ?>"> -->
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <div class="modal-header">
@@ -400,10 +419,15 @@ if (isset($id_jadwal)) {
                                                         <option value="2">Batal</option> -->
                                                       </select>
                                                     </div>
+                                                    <div class="form-group">
+
+                                                      <label for="exampleSelectRounded0">Note</label>
+                                                      <input class="form-control" type="textarea" name="note" disabled value="<?= $jadwal['note'] ?>">
+                                                    </div>
                                                     <input type="hidden" name="id_jadwal" value="<?= $jadwal['id_jadwal'] ?>">
 
                                                     <div class="btn-group-toggle" style="width: 100px; float: right;">
-                                                      <button type="submit" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default">Submit</button>
+                                                      <button type="submit" name="update_jadwal" class="btn btn-block bg-gradient-primary btn-lg" data-toggle="modal" data-target="#modal-default">Submit</button>
                                                     </div>
 
 
